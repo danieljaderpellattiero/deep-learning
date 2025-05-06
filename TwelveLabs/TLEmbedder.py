@@ -21,11 +21,11 @@ def _save_segments_hdf5(filename: str, segments: List[SegmentEmbedding], output_
 				periods.add(segment.end_offset_sec)
 				embeddings[segment.embedding_option].append(segment.embeddings_float)
 		with h5py.File(filepath, "w") as f:
+				periods_group = f.create_group("periods")
 				audio_group = f.create_group("audio")
 				visual_text_group = f.create_group("visual-text")
-				audio_group.create_dataset("periods", data=list(periods))
+				periods_group.create_dataset("periods", data=list(periods))
 				audio_group.create_dataset("embeddings", data=embeddings["audio"])
-				visual_text_group.create_dataset("periods", data=list(periods))
 				visual_text_group.create_dataset("embeddings", data=embeddings["visual-text"])
 		dimension = len(embeddings["audio"][0]) if embeddings["audio"] else len(embeddings["visual-text"][0])
 		print(f"Saved {dimension} segments to {filepath}")
@@ -33,6 +33,7 @@ def _save_segments_hdf5(filename: str, segments: List[SegmentEmbedding], output_
 
 class Embedder:
 		def __init__(self, api_key: str, input_dir: str, output_dir: str):
+				self.embeddings = {}
 				self.input_dir = input_dir
 				self.output_dir = output_dir
 				self.client = TwelveLabs(api_key=api_key)
@@ -44,23 +45,26 @@ class Embedder:
 				task = task.retrieve(embedding_option=["visual-text", "audio"])
 				return task
 
-		def process(self):
+		def generate_embeddings(self):
 				os.makedirs(self.output_dir, exist_ok=True)
-				with open('urls.txt', 'r') as file:
-						lines = [line.strip() for line in file if line.strip()]
-				for line in lines:
-						try:
-								id, url = line.split(',', 1)
-						except ValueError:
-								print(f"Invalid line in urls.txt: {line}")
-								continue
-						hdf5_path = os.path.join(self.output_dir, f"{id}.hdf5")
+				for filename in sorted(os.listdir(self.input_dir)):
+						stem, ext = os.path.splitext(filename)
+						hdf5_path = os.path.join(self.output_dir, f"{stem}.hdf5")
 						if os.path.exists(hdf5_path):
-								print(f"Embedding {id} already created. Skipping...")
+								print(f"Embedding {stem} already created. Skipping...")
 								continue
-						task = self.embed_video(os.path.join(self.input_dir, f"{id}.*"))
+						task = self.embed_video(os.path.join(self.input_dir, filename))
 						if task.video_embedding and task.video_embedding.segments:
 								#_print_segments(task.video_embedding.segments)
-								_save_segments_hdf5(id, task.video_embedding.segments, output_path=self.output_dir)
+								_save_segments_hdf5(stem, task.video_embedding.segments, output_path=self.output_dir)
 						else:
 								print("No segments returned.")
+
+		def load_embeddings(self):
+				for filename	in sorted(os.listdir(self.output_dir)):
+						with h5py.File(os.path.join(self.output_dir, filename), "r") as file:
+								self.embeddings[filename] = {
+										"audio": file["audio"]["embeddings"][:],
+										"visual-text": file["visual-text"]["embeddings"][:],
+										"periods": file["periods"]["periods"][:]
+								}

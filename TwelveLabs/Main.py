@@ -12,4 +12,5 @@ if __name__ == "__main__":
 		yt_dlp = Downloader(directory=args.input_dir)
 		yt_dlp.download()
 		embedder = Embedder(api_key=args.api_key, input_dir=args.input_dir, output_dir=args.output_dir)
-		embedder.process()
+		embedder.generate_embeddings()
+		embedder.load_embeddings()

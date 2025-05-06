@@ -5,6 +5,7 @@ from tqdm import tqdm
 from yt_dlp import YoutubeDL
 
 #region Utils
+# Not used anymore
 def sanitize_filename(directory):
 		pattern = re.compile(r'[^0-9A-Za-z\uAC00-\uD7A3]')
 		for filename in os.listdir(directory):
