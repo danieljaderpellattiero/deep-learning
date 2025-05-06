@@ -9,7 +9,7 @@ if __name__ == "__main__":
 		parser.add_argument('--output-dir', default='embeddings', help='Directory to save embeddings as HDF5 files')
 		args = parser.parse_args()
 
-		yt_dlp = Downloader()
+		yt_dlp = Downloader(directory=args.input_dir)
 		yt_dlp.download()
 		embedder = Embedder(api_key=args.api_key, input_dir=args.input_dir, output_dir=args.output_dir)
-		embedder.execute()
+		embedder.process()

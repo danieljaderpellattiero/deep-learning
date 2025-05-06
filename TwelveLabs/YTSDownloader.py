@@ -1,5 +1,6 @@
 import os
 import re
+import glob
 from tqdm import tqdm
 from yt_dlp import YoutubeDL
 
@@ -30,13 +31,7 @@ class Downloader:
 								downloaded = task.get('downloaded_bytes', 0)
 								if total and self.pbar is None:
 										filename = os.path.basename(task.get('filename', ''))
-										self.pbar = tqdm(
-										total=total,
-										unit='B',
-										unit_scale=True,
-										desc=filename,
-										leave=False
-										)
+										self.pbar = tqdm(total=total, unit='B', unit_scale=True, desc=filename, leave=False)
 								if self.pbar:
 										self.pbar.total = total
 										self.pbar.n = downloaded
@@ -48,12 +43,12 @@ class Downloader:
 												print(f" ✓ Finished: {task.get('filename')}")
 		#endregion
 
-		def __init__(self):
+		def __init__(self, directory: str):
 				self.urls = None
+				self.dir = directory
 				self.pb_hook = self._PBar()
 				self.options = {
 						'format': 'bv*+ba/b',
-						'outtmpl': os.path.join('./shorts', '%(title)s.%(ext)s'),
 						'retries': 4,
 						'quiet': True,
 						'writeinfojson': False,
@@ -64,11 +59,23 @@ class Downloader:
 				if not os.path.isfile('./urls.txt'):
 						print(f"File urls.txt does not exist.")
 						return
-				else:
-						with open('urls.txt', 'r') as f:
-								self.urls = [line.strip() for line in f if line.strip()]
-				if not os.path.exists('./shorts'):
-						os.makedirs('./shorts')
-				with YoutubeDL(self.options) as ydl:
-						ydl.download(self.urls)
-				sanitize_filename('./shorts')
+				if not os.path.exists(self.dir):
+						os.makedirs(self.dir)
+				with open('urls.txt', 'r') as file:
+						lines = [line.strip() for line in file if line.strip()]
+				for line in lines:
+						try:
+								id, url = line.split(',', 1)
+						except ValueError:
+								print(f"Invalid line in urls.txt: {line}")
+								continue
+						if glob.glob(os.path.join(self.dir, f"{id}.*")):
+								print(f"Video {id} already downloaded. Skipping...")
+								continue
+						options = self.options.copy()
+						options['outtmpl'] = os.path.join(self.dir, f"{id}.%(ext)s")
+						with YoutubeDL(options) as ydl:
+								try:
+										ydl.download([url])
+								except Exception as e:
+										print(f"Error downloading {url}: {e}")

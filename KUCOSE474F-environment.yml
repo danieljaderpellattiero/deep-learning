@@ -37,6 +37,8 @@ dependencies:
   - fonttools=4.55.3=py313h5eee18b_0
   - freetype=2.13.3=h4a9f257_0
   - h11=0.14.0=py313h06a4308_0
+  - h5py=3.12.1=py313h5842655_1
+  - hdf5=1.14.5=h2b7332f_2
   - httpcore=1.0.2=py313h06a4308_0
   - httpx=0.27.0=py313h06a4308_0
   - icu=73.1=h6a678d5_0
@@ -202,6 +204,7 @@ dependencies:
   - zlib=1.2.13=h5eee18b_1
   - zstd=1.5.6=hc292b87_0
   - pip:
+      - annotated-types==0.7.0
       - filelock==3.13.1
       - fsspec==2024.6.1
       - mpmath==1.3.0
@@ -217,9 +220,15 @@ dependencies:
       - nvidia-cusparse-cu11==11.7.5.86
       - nvidia-nccl-cu11==2.21.5
       - nvidia-nvtx-cu11==11.8.86
+      - pydantic==2.11.4
+      - pydantic-core==2.33.2
       - sympy==1.13.3
       - torch==2.7.0+cu118
       - torchaudio==2.7.0+cu118
       - torchvision==0.22.0+cu118
+      - tqdm==4.67.1
       - triton==3.3.0
+      - twelvelabs==0.4.7
+      - typing-inspection==0.4.0
+      - yt-dlp==2025.4.30
 prefix: /home/danieljader/miniconda3/envs/KUCOSE474F

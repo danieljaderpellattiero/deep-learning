@@ -14,8 +14,7 @@ def _print_segments(segments: List[SegmentEmbedding]):
 				)
 
 def _save_segments_hdf5(filename: str, segments: List[SegmentEmbedding], output_path: str):
-		stem, _ = os.path.splitext(filename)
-		filepath = os.path.join(output_path, f"{stem}.hdf5")
+		filepath = os.path.join(output_path, f"{filename}.hdf5")
 		periods: set[float] = {0.0}
 		embeddings: dict[str, list[list[float]]] = {"audio": [], "visual-text": []}
 		for segment in segments:
@@ -45,16 +44,23 @@ class Embedder:
 				task = task.retrieve(embedding_option=["visual-text", "audio"])
 				return task
 
-		def execute(self):
+		def process(self):
 				os.makedirs(self.output_dir, exist_ok=True)
-				for filename in sorted(os.listdir(self.input_dir)):
-						path = os.path.join(self.input_dir, filename)
-						if not os.path.isfile(path):
+				with open('urls.txt', 'r') as file:
+						lines = [line.strip() for line in file if line.strip()]
+				for line in lines:
+						try:
+								id, url = line.split(',', 1)
+						except ValueError:
+								print(f"Invalid line in urls.txt: {line}")
 								continue
-						print(f"Embedding {filename}...")
-						task = self.embed_video(path)
+						hdf5_path = os.path.join(self.output_dir, f"{id}.hdf5")
+						if os.path.exists(hdf5_path):
+								print(f"Embedding {id} already created. Skipping...")
+								continue
+						task = self.embed_video(os.path.join(self.input_dir, f"{id}.*"))
 						if task.video_embedding and task.video_embedding.segments:
 								#_print_segments(task.video_embedding.segments)
-								_save_segments_hdf5(filename, task.video_embedding.segments, output_path=self.output_dir)
+								_save_segments_hdf5(id, task.video_embedding.segments, output_path=self.output_dir)
 						else:
 								print("No segments returned.")
