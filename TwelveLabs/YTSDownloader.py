@@ -3,6 +3,7 @@ import re
 from tqdm import tqdm
 from yt_dlp import YoutubeDL
 
+#region Utils
 def sanitize_filename(directory):
 		pattern = re.compile(r'[^0-9A-Za-z\uAC00-\uD7A3]')
 		for filename in os.listdir(directory):
@@ -14,6 +15,7 @@ def sanitize_filename(directory):
 				new_path = os.path.join(directory, new_fname)
 				if old_filename != new_path:
 						os.rename(old_filename, new_path)
+#endregion
 
 class Downloader:
 		#region Progress Bar

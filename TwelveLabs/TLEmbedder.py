@@ -1,75 +1,60 @@
 import os
-from tqdm import tqdm
-from typing import List, Optional
+import h5py
+from typing import List
 from twelvelabs import TwelveLabs
 from twelvelabs.models.embed import EmbeddingsTask, SegmentEmbedding
 
 #region Utils
-def _print_segments(
-	segments: List[SegmentEmbedding],
-		max_elements: int = 5
-):
-		for seg in segments:
+def _print_segments(segments: List[SegmentEmbedding]):
+		for segment in segments:
 				print(
-						f"• scope={seg.embedding_scope:<12}"
-						f" option={seg.embedding_option:<12}"
-						f" [{seg.start_offset_sec:.1f}s–{seg.end_offset_sec:.1f}s]"
+						f"◇ scope={segment.embedding_scope:<10}"
+						f" option={segment.embedding_option:<10}"
+						f" [{segment.start_offset_sec:.1f}s–{segment.end_offset_sec:.1f}s]"
 				)
-				print("  embeddings:", seg.embeddings_float[:max_elements], "…")
+
+def _save_segments_hdf5(filename: str, segments: List[SegmentEmbedding], output_path: str):
+		stem, _ = os.path.splitext(filename)
+		filepath = os.path.join(output_path, f"{stem}.hdf5")
+		periods: set[float] = {0.0}
+		embeddings: dict[str, list[list[float]]] = {"audio": [], "visual-text": []}
+		for segment in segments:
+				periods.add(segment.end_offset_sec)
+				embeddings[segment.embedding_option].append(segment.embeddings_float)
+		with h5py.File(filepath, "w") as f:
+				audio_group = f.create_group("audio")
+				visual_text_group = f.create_group("visual-text")
+				audio_group.create_dataset("periods", data=list(periods))
+				audio_group.create_dataset("embeddings", data=embeddings["audio"])
+				visual_text_group.create_dataset("periods", data=list(periods))
+				visual_text_group.create_dataset("embeddings", data=embeddings["visual-text"])
+		dimension = len(embeddings["audio"][0]) if embeddings["audio"] else len(embeddings["visual-text"][0])
+		print(f"Saved {dimension} segments to {filepath}")
 #endregion
 
 class Embedder:
-		#region Progress Bar
-		class _ProgressBar:
-				def __init__(self):
-						self.pbar = tqdm(total=100, desc="Embedding", unit="%")
-
-				def __call__(self, task: EmbeddingsTask):
-						raw = getattr(task, "progress", None) or getattr(task, "done_percent", None)
-						if raw is not None:
-								pct = int(raw * 100) if raw <= 1 else int(raw)
-								delta = pct - self.pbar.n
-								if delta > 0:
-										self.pbar.update(delta)
-						else:
-								self.pbar.update(1)
-						if task.status.lower() in ("done", "completed"):
-								if self.pbar.n < 100:
-										self.pbar.update(100 - self.pbar.n)
-								self.pbar.close()
-		#endregion
-
-		def __init__(
-				self,
-				api_key: str,
-				input_dir: str = "shorts",
-		):
-				self.client = TwelveLabs(api_key=api_key)
+		def __init__(self, api_key: str, input_dir: str, output_dir: str):
 				self.input_dir = input_dir
+				self.output_dir = output_dir
+				self.client = TwelveLabs(api_key=api_key)
 
 		def embed_video(self, video_path: str) -> EmbeddingsTask:
-				task = self.client.embed.task.create(
-						model_name="Marengo-retrieval-2.7",
-						video_path=video_path
-				)
-				print(f"\nCreated task id={task.id!r} status={task.status!r}")
-				hook = self._ProgressBar()
-				task.wait_for_done(
-						sleep_interval=2,
-						callback=hook
-				)
+				task = self.client.embed.task.create(model_name="Marengo-retrieval-2.7", video_file=video_path)
+				print(f"Created task id={task.id!r}; status={task.status!r}")
+				task.wait_for_done(sleep_interval=2)
 				task = task.retrieve(embedding_option=["visual-text", "audio"])
-				print("Embedding complete.\n")
 				return task
 
-		def embed_all(self):
+		def execute(self):
+				os.makedirs(self.output_dir, exist_ok=True)
 				for filename in sorted(os.listdir(self.input_dir)):
 						path = os.path.join(self.input_dir, filename)
 						if not os.path.isfile(path):
 								continue
-						print(f"Embedding {filename} …")
+						print(f"Embedding {filename}...")
 						task = self.embed_video(path)
 						if task.video_embedding and task.video_embedding.segments:
-								_print_segments(task.video_embedding.segments)
+								#_print_segments(task.video_embedding.segments)
+								_save_segments_hdf5(filename, task.video_embedding.segments, output_path=self.output_dir)
 						else:
 								print("No segments returned.")
