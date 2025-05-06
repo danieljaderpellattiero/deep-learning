@@ -1,8 +1,15 @@
 import os
 import h5py
+import matplotlib
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 from typing import List
 from twelvelabs import TwelveLabs
+from sklearn.metrics.pairwise import cosine_similarity
 from twelvelabs.models.embed import EmbeddingsTask, SegmentEmbedding
+
+matplotlib.use('Agg')
 
 #region Utils
 def _print_segments(segments: List[SegmentEmbedding]):
@@ -29,6 +36,27 @@ def _save_segments_hdf5(filename: str, segments: List[SegmentEmbedding], output_
 				visual_text_group.create_dataset("embeddings", data=embeddings["visual-text"])
 		dimension = len(embeddings["audio"][0]) if embeddings["audio"] else len(embeddings["visual-text"][0])
 		print(f"Saved {dimension} segments to {filepath}")
+
+def _plot_similarity(video_ids, audio_similarity, visual_text_similarity):
+		sns.set_theme("notebook", style="whitegrid")
+		fig, axes = plt.subplots(1, 2, figsize=(16, 9))
+		sns.heatmap(audio_similarity,
+		            xticklabels=video_ids,
+		            yticklabels=video_ids,
+		            ax=axes[0],
+		            annot=True, fmt=".2f",
+		            cbar=True, cbar_kws={'label': 'cosine distance'})
+		axes[0].set_title("Audio Similarity (Cosine Distance)")
+		sns.heatmap(visual_text_similarity,
+		            xticklabels=video_ids,
+		            yticklabels=video_ids,
+		            ax=axes[1],
+		            annot=True, fmt=".2f",
+		            cbar=True, cbar_kws={'label': 'cosine distance'})
+		axes[1].set_title("Visual-Text Similarity (Cosine Distance)")
+		plt.savefig("embedding_similarity.png", dpi=500)
+		plt.close(fig)
+		print("Saved similarity plot as embedding_similarity.png")
 #endregion
 
 class Embedder:
@@ -68,3 +96,21 @@ class Embedder:
 										"visual-text": file["visual-text"]["embeddings"][:],
 										"periods": file["periods"]["periods"][:]
 								}
+
+		def calculate_embeddings_similarity(self):
+			video_ids = list(self.embeddings.keys())
+			audio_features = np.array([])
+			visual_text_features = np.array([])
+			for vid in video_ids:
+					audio_features = np.vstack([audio_features, self.embeddings[vid]["audio"].mean(axis=0)])\
+							if audio_features.size else self.embeddings[vid]["audio"].mean(axis=0)
+					visual_text_features = np.vstack([visual_text_features, self.embeddings[vid]["visual-text"].mean(axis=0)])\
+							if visual_text_features.size else self.embeddings[vid]["visual-text"].mean(axis=0)
+			audio_features = audio_features / np.linalg.norm(audio_features, axis=1, keepdims=True)
+			visual_text_features = visual_text_features / np.linalg.norm(visual_text_features, axis=1, keepdims=True)
+			audio_similarity = cosine_similarity(audio_features)
+			visual_text_similarity = cosine_similarity(visual_text_features)
+			_plot_similarity(
+					[video_ids.rsplit('.')[0] for video_ids in video_ids],
+					audio_similarity,
+					visual_text_similarity)

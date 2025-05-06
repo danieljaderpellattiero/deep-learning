@@ -14,3 +14,4 @@ if __name__ == "__main__":
 		embedder = Embedder(api_key=args.api_key, input_dir=args.input_dir, output_dir=args.output_dir)
 		embedder.generate_embeddings()
 		embedder.load_embeddings()
+		embedder.calculate_embeddings_similarity()
