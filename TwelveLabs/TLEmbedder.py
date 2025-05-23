@@ -39,7 +39,7 @@ def _save_segments_hdf5(filename: str, segments: List[SegmentEmbedding], output_
 
 def _plot_similarity(video_ids, audio_similarity, visual_text_similarity):
 		sns.set_theme("notebook", style="whitegrid")
-		fig, axes = plt.subplots(1, 2, figsize=(16, 9))
+		fig, axes = plt.subplots(1, 2, figsize=(14, 8))
 		sns.heatmap(audio_similarity,
 		            xticklabels=video_ids,
 		            yticklabels=video_ids,
