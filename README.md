@@ -86,3 +86,18 @@ python Sampler.py
 2. The real urls will be then derived from the ids and stored in a tsv file.
 
 > Note: The ratios of the splits are 80% train, 10% validation and 10% test and are hardcoded in the script.
+
+### Phase 3 － YouTube videos download and clipping
+
+Run the `Downloader.py` module after setting up the virtual environment and installing the dependencies.  
+
+```bash
+python Downloader.py
+```
+
+**How it works:**
+
+1. The script will download the YouTube videos using the URLs stored in the tsv files.
+2. The videos will be clipped to the desired duration and stored in the appropriate directory.
+
+> Note: The default duration is 20 seconds and its hardcoded in the script.

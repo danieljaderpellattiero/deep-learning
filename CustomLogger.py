@@ -1,7 +1,7 @@
 import logging
 
 class CLogger:
-		def __init__(self, log_file: str = "", level: int = logging.INFO, muted: bool = False):
+		def __init__(self, log_file: str = '', level: int = logging.INFO, muted: bool = False):
 				self.muted = muted
 				self.log_file = log_file
 				self._setup_logging(level)
@@ -14,6 +14,11 @@ class CLogger:
 				datefmt='%Y-%m-%d %H:%M:%S'
 				)
 				self.logger = logging.getLogger(__name__)
+
+		def debug(self, message: str) -> None:
+				if self.muted:
+						return
+				self.logger.debug(message)
 
 		def info(self, message: str) -> None:
 				if self.muted:

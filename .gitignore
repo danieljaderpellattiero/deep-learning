@@ -1,8 +1,6 @@
-shorts/
-
-YT8M/data/train/*.tfrecord
-YT8M/data/train/*.json
-YT8M/data/validation/*.tfrecord
-YT8M/data/validation/*.json
-YT8M/data/test/*.tfrecord
-YT8M/data/test/*.json
+data/train/*.tfrecord
+data/train/*.json
+data/validation/*.tfrecord
+data/validation/*.json
+data/test/*.tfrecord
+data/test/*.json
