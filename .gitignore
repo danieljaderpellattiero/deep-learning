@@ -4,3 +4,4 @@ data/validation/*.tfrecord
 data/validation/*.json
 data/test/*.tfrecord
 data/test/*.json
+videos/

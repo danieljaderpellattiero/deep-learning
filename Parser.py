@@ -9,11 +9,12 @@ import requests
 import tensorflow as tf
 from typing import Any, Generator, Optional
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 # --------------------------------------------------------------------------- #
 #		CONFIGURATION                                                              #
 # --------------------------------------------------------------------------- #
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-youtube = build('youtube', 'v3', developerKey='')
+youtube = build('youtube', 'v3', developerKey='AIzaSyBQ8JQ54N1rY6wBXqd8ftZAXcL55zIGDpY')
 # --------------------------------------------------------------------------- #
 #  CONSTANTS                                                                  #
 # --------------------------------------------------------------------------- #
@@ -22,9 +23,9 @@ DESIRED_CATEGORIES: int = 10
 CROSS_SPLIT_SHARDS_IDS: set[str] = set()
 VOCABULARY_PATH: str = './data/vocabulary.csv'
 DESIRED_VIDEO_PER_CATEGORY: dict[str, int] = {
-		'train': 144,
-		'validation': 18,
-		'test': 18
+		'train': 10,
+		'validation': 5,
+		'test': 5
 }
 # --------------------------------------------------------------------------- #
 #  REGEX PATTERNS                                                             #
@@ -73,7 +74,7 @@ def iterate_shard(root_dir: typing.Union[str, pathlib.Path],
 		root = pathlib.Path(root_dir)
 		for shard_path in root.glob(pattern):
 				shard_counter += 1
-				print(f'[{time.strftime("%H:%M:%S")}]\tProcessing shard: {shard_path} \t #{shard_counter}')
+				print(f'[{time.strftime("%H:%M:%S")} | {split}] Processing shard: {shard_path} #{shard_counter}')
 				if split == 'validation':
 						CROSS_SPLIT_SHARDS_IDS.add(shard_path.stem)
 				if split == 'test' and shard_path.stem in CROSS_SPLIT_SHARDS_IDS:
@@ -104,14 +105,28 @@ def are_videos_available(yt_ids: list[str]) -> set[str]:
 		:param yt_ids: YouTube video IDs (11-character string)
 		:return: set of available YouTube video IDs that are public and embeddable
 		"""
-		request = youtube.videos().list(part='status', id=','.join(yt_ids))
-		response = request.execute()
-		if 'items' in response and len(response['items']) > 0:
-			return {
-					item['id'] for item in response.get('items', [])
-					if item['status']['privacyStatus'] == 'public' and item['status'].get('embeddable', True)
-			}
-		return set()
+		try:
+			request = youtube.videos().list(part='status,contentDetails', id=','.join(yt_ids))
+			response = request.execute()
+		except HttpError as e:
+			print(f'[{time.strftime("%H:%M:%S")}] Error fetching video details: {e}')
+			return set()
+
+		available_videos:	set[str] = set()
+		for item in response.get('items', []):
+				status = item.get('status', {})
+				content_details = item.get('contentDetails', {})
+				if status.get('privacyStatus') !=	'public':
+						continue
+				if not status.get('embeddable', True):
+						continue
+				if content_details.get('contentRating', {}).get('ytRating') == 'ytAgeRestricted':
+						continue
+				region = content_details.get('regionRestriction', {})
+				if 'blocked' in region or 'blockedIn' in region or 'allowed' in region:
+						continue
+				available_videos.add(item['id'])
+		return available_videos
 
 def yt8m_key_to_video(key: str, timeout: int = 4) -> Optional[tuple[str, str]]:
 		"""
@@ -169,7 +184,7 @@ def export_urls_to_csv(split: str, urls: dict[str, dict[str, str]]) -> None:
 						file.write('video_url\tvideo_id\n')  # Write header
 						for yt_id, url in url_map.items():
 								file.write(f'{url}\t{yt_id}\n')
-				print(f'[{time.strftime("%H:%M:%S")}]\t'
+				print(f'[{time.strftime("%H:%M:%S")} | {split}] '
 				      f'Exported {len(url_map)} URLs for category "{m_category}" to {tsv_path / f"{m_category}.tsv"}')
 
 def init_dataset() -> None:
@@ -215,8 +230,8 @@ def init_dataset() -> None:
 								export_urls_to_csv(split, video_urls)
 								break
 				if not initialized:
-						print(f'[{time.strftime("%H:%M:%S")}]\tFailed to collect {quota} videos for each category in {split} split.')
-						print(f'[{time.strftime("%H:%M:%S")}]\tPlease adjust the split size or download more shards.')
+						print(f'[{time.strftime("%H:%M:%S")} | {split}] Failed to collect {quota} videos for each category.')
+						print(f'[{time.strftime("%H:%M:%S")} | {split}] Please adjust the split size or download more shards.')
 						exit(1)
 				if split == 'train':
 						sel_m_categories.update(wanted_categories)

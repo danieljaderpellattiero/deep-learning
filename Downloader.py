@@ -21,7 +21,7 @@ def download_and_clip(url: str, out_dir: pathlib.Path) -> bool:
 		:param out_dir: Directory to save the downloaded and clipped video
 		:return: True if successful, False otherwise
 		"""
-		for attempt in range(0, MAX_DOWNLOAD_RETRIES - 1):
+		for attempt in range(0, MAX_DOWNLOAD_RETRIES):
 				try:
 						with YoutubeDL({
 								'format': 'bv*+ba/best',
@@ -42,9 +42,7 @@ def download_and_clip(url: str, out_dir: pathlib.Path) -> bool:
 						tmp_video_path.replace(video_path)
 						return True
 				except Exception as e:
-						print(f'[{time.strftime("%H:%M:%S")}]\tError downloading or clipping video: {e}')
-						if attempt == MAX_DOWNLOAD_RETRIES - 1:
-								print(f'[{time.strftime("%H:%M:%S")}]\tFailed to process URL: {url}')
+						print(f'[{time.strftime("%H:%M:%S")}] Error downloading or clipping video: {e} (#{attempt})')
 		return False
 
 def process_tsv_file(split: str, tsv_path: pathlib.Path) -> None:
@@ -68,9 +66,8 @@ def process_tsv_file(split: str, tsv_path: pathlib.Path) -> None:
 		for url in urls:
 				success = success and download_and_clip(url, output_dir)
 				if not success:
-						print(f'[{time.strftime("%H:%M:%S")}]\tError processing URL: {url}')
-						exit(1)
-		print(f'[{time.strftime("%H:%M:%S")} | {split}]\tProcessed {len(urls)} URLs for category "{category}"')
+						raise Exception(url)
+		print(f'[{time.strftime("%H:%M:%S")} | {split}] Processed {len(urls)} URLs for category "{category}"')
 
 def launch_threaded_downloader() -> None:
 		"""
@@ -80,21 +77,21 @@ def launch_threaded_downloader() -> None:
 		for split in ['train', 'validation', 'test']:
 				tsv_path = pathlib.Path(DATA_PATH) / split / 'urls'
 				if not tsv_path.is_dir():
-						print(f'[{time.strftime("%H:%M:%S")}]\t Missing folder: {tsv_path} – skipped')
+						print(f'[{time.strftime("%H:%M:%S")}] Missing folder: {tsv_path} – skipped')
 						continue
 				tsv_files = list(tsv_path.glob('*.tsv'))
 				if not tsv_files:
-						print(f'[{time.strftime("%H:%M:%S")} | {split}] no TSV files in {tsv_path} – skipped')
+						print(f'[{time.strftime("%H:%M:%S")} | {split}] No TSV files in {tsv_path} – skipped')
 						continue
-				print(f'[{time.strftime("%H:%M:%S")} | {split}] found {len(tsv_files)} TSV file(s)')
+				print(f'[{time.strftime("%H:%M:%S")} | {split}] Found {len(tsv_files)} TSV file(s)')
 				with ThreadPoolExecutor(max_workers=len(tsv_files)) as executor:
-						promises = [executor.submit(process_tsv_file,	split, tsv_file) for tsv_file in tsv_files]
+						promises = [executor.submit(process_tsv_file, split, tsv_file) for tsv_file in tsv_files]
 						for future in as_completed(promises):
 								try:
 										future.result()
 								except Exception as e:
-										print(f'[{time.strftime("%H:%M:%S")}]\tError processing TSV file: {e}')
-				print(f'[{time.strftime("%H:%M:%S")} | {split}] Completed\n')
+										print(f'[{time.strftime("%H:%M:%S")}] Error processing TSV file: {e}')
+				print(f'[{time.strftime("%H:%M:%S")} | {split}] Download and clipping completed for all categories')
 
 if __name__ == '__main__':
 		launch_threaded_downloader()
