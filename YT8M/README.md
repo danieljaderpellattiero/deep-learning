@@ -83,6 +83,6 @@ python Sampler.py
 **How it works:**
 
 1. The script will sample YouTube video anonymous ids from the downloaded dataset shards by macro category.
-2. The real urls will be then derived from the ids and stored in a csv file.
+2. The real urls will be then derived from the ids and stored in a tsv file.
 
 > Note: The ratios of the splits are 80% train, 10% validation and 10% test and are hardcoded in the script.
