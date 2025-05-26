@@ -105,3 +105,8 @@ python Downloader.py
 ### Bob (the Builder)
 
 If a _.tsv_ file contains YouTube urls that somehow cannot be downloaded, you can run the `Bob.py` module to regenerate the file with fresh urls retrieved from the shards. _"Can we fix it? Yes we can!"_
+
+> To do:
+>
+> - Blacklists for broken urls. (`Downloader.py` -> `Parser.py` -> `Bob.py`)
+> - Validation and test sets shard tracking. (for _.tsv_ file generation)

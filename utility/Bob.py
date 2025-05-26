@@ -20,16 +20,16 @@ _NEW_WRAPPER_RE  = re.compile(r'\((\{.*\"vid\".*})\)')
 _OLD_WRAPPER_RE  = re.compile(r'i\(\s*"[^"]+"\s*,\s*"([^"]{11})"\s*\)')
 
 YT_API_BATCH: int = 50
-DATA_PATH:	str = './data'
-VIDEO_PATH: str = './videos'
-VOCABULARY_PATH: str = './data/vocabulary.csv'
+DATA_PATH:	str = '../data'
+VIDEO_PATH: str = '../videos'
+VOCABULARY_PATH: str = '../data/vocabulary.csv'
 DESIRED_VIDEO_PER_CATEGORY: dict[str, int] = {
 		'train': 144,
 		'validation': 18,
 		'test': 18
 }
 
-features: dict = {
+features_schema: dict = {
 		'id': tf.io.FixedLenFeature([], tf.string),
 		'labels': tf.io.VarLenFeature(tf.int64),
 }
@@ -60,7 +60,7 @@ def iterate_shards(root_dir: typing.Union[str, pathlib.Path],
 				print(f'[{time.strftime("%H:%M:%S")} | {split}] Processing shard: {shard_path} #{shard_counter}')
 				dataset = tf.data.TFRecordDataset(str(shard_path), compression_type='')
 				for record in dataset:
-						yield tf.io.parse_single_example(record, features)
+						yield tf.io.parse_single_example(record, features_schema)
 
 def yt8m_key_to_video(key: str, timeout: int = 4) -> Optional[tuple[str, str]]:
 		"""
