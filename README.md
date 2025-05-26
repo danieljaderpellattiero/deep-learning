@@ -83,7 +83,7 @@ python Sampler.py
 **How it works:**
 
 1. The script will sample YouTube video anonymous ids from the downloaded dataset shards by macro category.
-2. The real urls will be then derived from the ids and stored in a tsv file.
+2. The real urls will be then derived from the ids and stored in a _.tsv_ file.
 
 > Note: The ratios of the splits are 80% train, 10% validation and 10% test and are hardcoded in the script.
 
@@ -97,7 +97,11 @@ python Downloader.py
 
 **How it works:**
 
-1. The script will download the YouTube videos using the URLs stored in the tsv files.
+1. The script will download the YouTube videos using the URLs stored in the _.tsv_ files.
 2. The videos will be clipped to the desired duration and stored in the appropriate directory.
 
 > Note: The default duration is 20 seconds and its hardcoded in the script.
+
+### Bob (the Builder)
+
+If a _.tsv_ file contains YouTube urls that somehow cannot be downloaded, you can run the `Bob.py` module to regenerate the file with fresh urls retrieved from the shards. _"Can we fix it? Yes we can!"_

@@ -14,7 +14,7 @@ from googleapiclient.errors import HttpError
 #		CONFIGURATION                                                              #
 # --------------------------------------------------------------------------- #
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-youtube = build('youtube', 'v3', developerKey='AIzaSyBQ8JQ54N1rY6wBXqd8ftZAXcL55zIGDpY')
+youtube = build('youtube', 'v3', developerKey='')
 # --------------------------------------------------------------------------- #
 #  CONSTANTS                                                                  #
 # --------------------------------------------------------------------------- #
@@ -23,9 +23,9 @@ DESIRED_CATEGORIES: int = 10
 CROSS_SPLIT_SHARDS_IDS: set[str] = set()
 VOCABULARY_PATH: str = './data/vocabulary.csv'
 DESIRED_VIDEO_PER_CATEGORY: dict[str, int] = {
-		'train': 10,
-		'validation': 5,
-		'test': 5
+		'train': 144,
+		'validation': 18,
+		'test': 18
 }
 # --------------------------------------------------------------------------- #
 #  REGEX PATTERNS                                                             #
@@ -60,7 +60,7 @@ def build_categories_from_csv_dict() -> None:
 										m_categories[row['Vertical1']] = set()
 								m_categories[row['Vertical1']].add(int(row['Index']))
 
-def iterate_shard(root_dir: typing.Union[str, pathlib.Path],
+def iterate_shards(root_dir: typing.Union[str, pathlib.Path],
                   split: str, pattern: str = '*.tfrecord') -> Generator[Any, Any, None]:
 		"""
 		Iterates over TFRecord shards in a directory.
@@ -170,7 +170,7 @@ def is_split_full(video_urls: dict[str, dict[str, str]], quota:	int, needed_cate
 		return (len(needed_categories) == DESIRED_CATEGORIES and
 		        all(len(video_urls.get(category, ())) == quota for category in needed_categories))
 
-def export_urls_to_csv(split: str, urls: dict[str, dict[str, str]]) -> None:
+def export_urls_to_tsv(split: str, urls: dict[str, dict[str, str]]) -> None:
 		"""
 		Exports video URLs to CSV files for each category.
 
@@ -181,7 +181,7 @@ def export_urls_to_csv(split: str, urls: dict[str, dict[str, str]]) -> None:
 		tsv_path.mkdir(parents=True, exist_ok=True)
 		for m_category, url_map in urls.items():
 				with open(tsv_path / f'{m_category.replace(" ", "_")}.tsv', 'w', encoding='utf-8') as file:
-						file.write('video_url\tvideo_id\n')  # Write header
+						file.write('video_url\tvideo_id\n')
 						for yt_id, url in url_map.items():
 								file.write(f'{url}\t{yt_id}\n')
 				print(f'[{time.strftime("%H:%M:%S")} | {split}] '
@@ -204,9 +204,9 @@ def init_dataset() -> None:
 						for video, category in pending:
 								if video in sanitized_pending and len(video_urls.get(category, ())) < quota:
 									video_urls.setdefault(category, {})[video] = f'https://www.youtube.com/watch?v={video}'
-						pending = []
+						pending: list[tuple[str, str]] = []
 
-				for shard in iterate_shard(f'./data/{split}', split):
+				for shard in iterate_shards(f'./data/{split}', split):
 						labels = set(shard['labels'].values.numpy())
 						cat = find_macro_category(labels)
 						if cat is None:
@@ -227,11 +227,11 @@ def init_dataset() -> None:
 										flush_batch()
 						if is_split_full(video_urls, quota, wanted_categories):
 								initialized = True
-								export_urls_to_csv(split, video_urls)
+								export_urls_to_tsv(split, video_urls)
 								break
 				if not initialized:
-						print(f'[{time.strftime("%H:%M:%S")} | {split}] Failed to collect {quota} videos for each category.')
-						print(f'[{time.strftime("%H:%M:%S")} | {split}] Please adjust the split size or download more shards.')
+						print(f'[{time.strftime("%H:%M:%S")} | {split}] Failed to collect {quota} videos for each category')
+						print(f'[{time.strftime("%H:%M:%S")} | {split}] Please adjust the split size or download more shards')
 						exit(1)
 				if split == 'train':
 						sel_m_categories.update(wanted_categories)

@@ -57,14 +57,13 @@ def process_tsv_file(split: str, tsv_path: pathlib.Path) -> None:
 		"""
 		success: bool = True
 		category = tsv_path.stem
-		output_dir = pathlib.Path(VIDEO_PATH) / split / category
-		output_dir.mkdir(parents=True, exist_ok=True)
+		output_path = pathlib.Path(VIDEO_PATH) / split / category
+		output_path.mkdir(parents=True, exist_ok=True)
 		with tsv_path.open(newline='', encoding='utf-8') as file:
 			reader = csv.reader(file, delimiter='\t')
-			next(reader, None)
 			urls = [row[0].strip() for row in reader if row and row[0].strip()]
 		for url in urls:
-				success = success and download_and_clip(url, output_dir)
+				success = success and download_and_clip(url, output_path)
 				if not success:
 						raise Exception(url)
 		print(f'[{time.strftime("%H:%M:%S")} | {split}] Processed {len(urls)} URLs for category "{category}"')
