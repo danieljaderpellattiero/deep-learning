@@ -118,14 +118,13 @@ python Featurizer.py
 4. Retrieves the video-text and audio features embeddings with TwelveLabs API. (Marengo 2.7)
 5. Saves the features in a _.hdf5_ file.
 
-### Bob (the Builder)
+### BobTheDownloader
 
-If a _.tsv_ file contains YouTube urls that somehow cannot be downloaded, you can run the `Bob.py` module to regenerate the file with fresh urls retrieved from the shards. _"Can we fix it? Yes we can!"_
+If a _.tsv_ file contains YouTube urls that somehow cannot be downloaded, you can run the `BobTheDownloader.py` module to regenerate the file with fresh urls retrieved from the shards. _"Can we fix it? Yes we can!"_
 
-> To do:
->
-> - Blacklists for broken urls. (`Downloader.py` -> `Parser.py` -> `Bob.py`)
-> - Validation and test sets shard tracking. (for _.tsv_ file generation)
+### BobTheClipper
+
+If a video doesn't not match TwelveLabs' requirements, you can run the `BobTheClipper.py` module to clip it to the closest aspect ratio supported, by adding black bars to the sides or top/bottom of the video.
 
 ## HDF5 File structure
 
@@ -156,3 +155,9 @@ The HDF5 file structure follows:
    ├─ embedded_string_metadata      float32[3072]     # OpenAI embedding of string metadata
    └─ normalized_numerical_metadata float32[M_meta]   # L2-normalized numeric metadata vector
 ```
+
+> To do:
+>
+> - Blacklists for broken urls and used shards. (`Downloader.py` -> `Parser.py` -> `Bob.py`)
+> - Validation and test sets shard tracking. (for _.tsv_ file generation)
+> - Clip videos after downloading or check before downloading.

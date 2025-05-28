@@ -46,7 +46,7 @@ features: dict = {
 sel_m_categories = set()
 m_categories:	dict[str, set[int]] = {}
 
-def build_categories_from_csv_dict() -> None:
+def build_categories_from_csv_dict(external_call: bool = False) -> dict[str, set[int]] or None:
 	"""
 	Builds a dictionary of macro categories and their respective subcategories IDs from a CSV file.
 
@@ -59,6 +59,9 @@ def build_categories_from_csv_dict() -> None:
 				if row['Vertical1'] not in m_categories:
 					m_categories[row['Vertical1']] = set()
 				m_categories[row['Vertical1']].add(int(row['Index']))
+		if external_call:
+			return m_categories.copy()
+		return None
 
 def iterate_shards(root_path: typing.Union[str, pathlib.Path],
                   split: str, pattern: str = '*.tfrecord') -> Generator[Any, Any, None]:

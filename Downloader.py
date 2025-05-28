@@ -55,7 +55,7 @@ def process_tsv_file(split: str, tsv_path: pathlib.Path) -> tuple[bool, str]:
 	"""
 	download_counter = 0
 	error_occurred = False
-	category = tsv_path.stem
+	category = tsv_path.stem.replace('_',' ').strip()
 	output_path = pathlib.Path(VIDEO_PATH) / split / category
 	output_path.mkdir(parents=True, exist_ok=True)
 	existing_videos_ids = set([video.stem for video in pathlib.Path(output_path).glob('*') if video.is_file()])
