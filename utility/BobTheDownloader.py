@@ -13,7 +13,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-youtube = build('youtube', 'v3', developerKey='AIzaSyBQ8JQ54N1rY6wBXqd8ftZAXcL55zIGDpY')
+youtube = build('youtube', 'v3', developerKey='')
 
 _KEY_RE          = re.compile(r'^[A-Za-z0-9_-]{4}$')
 _NEW_WRAPPER_RE  = re.compile(r'\((\{.*\"vid\".*})\)')
