@@ -72,17 +72,17 @@ cat ../download.py | shard=1,10 partition=2/video/train mirror=asia python
 cat ../download.py | shard=1,10 partition=2/video/validate mirror=asia python
 ```
 
-### Phase 2 － YouTube videos sampling
+### Phase 2 － YouTube videos parsing
 
-Run the `Sampler.py` module after setting up the virtual environment and installing the dependencies.  
+Run the `Parser.py` module after setting up the virtual environment and installing the dependencies.  
 
 ```bash
-python Sampler.py
+python Parser.py
 ```
 
 **How it works:**
 
-1. Sample YouTube video anonymous ids from the downloaded dataset shards by macro category.
+1. Parse YouTube video anonymous ids from the downloaded dataset shards by macro category.
 2. The real urls will be then derived from the ids and stored in a _.tsv_ file.
 
 > Note: The ratios of the splits are 80% train, 10% validation and 10% test and are hardcoded in the script.
