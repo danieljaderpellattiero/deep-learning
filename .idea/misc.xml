@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Black">
-    <option name="sdkName" value="COSE474" />
+    <option name="sdkName" value="COSE474A" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="KUCOSE474FP" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="COSE474A" project-jdk-type="Python SDK" />
+  <component name="PythonCompatibilityInspectionAdvertiser">
+    <option name="version" value="3" />
+  </component>
 </project>

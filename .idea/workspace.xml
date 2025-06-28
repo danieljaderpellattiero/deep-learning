@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="39af559d-addf-41eb-95f2-4abcb2f851f4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deep-learning.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CustomLogger.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Downloader.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Featurizer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/KUCOSE474FP-environment.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Parser.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/download.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Arts_&amp;_Entertainment.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Autos_&amp;_Vehicles.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Business_&amp;_Industrial.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Computers_&amp;_Electronics.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Food_&amp;_Drink.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Games.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Law_&amp;_Government.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Pets_&amp;_Animals.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Reference.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test/urls/Sports.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Arts_&amp;_Entertainment.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Autos_&amp;_Vehicles.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Business_&amp;_Industrial.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Computers_&amp;_Electronics.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Food_&amp;_Drink.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Games.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Law_&amp;_Government.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Pets_&amp;_Animals.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Reference.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/train/urls/Sports.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Arts_&amp;_Entertainment.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Autos_&amp;_Vehicles.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Business_&amp;_Industrial.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Computers_&amp;_Electronics.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Food_&amp;_Drink.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Games.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Law_&amp;_Government.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Pets_&amp;_Animals.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Reference.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/validation/urls/Sports.tsv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/vocabulary.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/embeddings/classes.hdf5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/embeddings/test.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/embeddings/train.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/embeddings/validation.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/BobTheClipper.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/BobTheDownloader.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2z8m3IV7fOm5Ii0lx4AUFWlqHZR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;hw/mlp&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/danieljader/PythonProject/deep-learning&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-PY-251.26094.141" />
+        <option value="bundled-python-sdk-9f8e2b94138c-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.26094.141" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="39af559d-addf-41eb-95f2-4abcb2f851f4" name="Changes" comment="" />
+      <created>1751120873955</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1751120873955</updated>
+      <workItem from="1751120875184" duration="45000" />
+      <workItem from="1751121286227" duration="914000" />
+      <workItem from="1751122210144" duration="68000" />
+      <workItem from="1751122313052" duration="69000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
