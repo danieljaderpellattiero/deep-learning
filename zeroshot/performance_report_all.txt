@@ -1,0 +1,25 @@
+==================================================
+PERFORMANCE REPORT - All
+==================================================
+
+OVERALL METRICS:
+------------------------------
+Accuracy:       0.5350
+Precision:      0.6601
+Recall:         0.5350
+F1-Score:       0.5119
+
+CLASS-WISE PERFORMANCE:
+--------------------------------------------------
+Class                Precision  Recall     F1-Score  
+--------------------------------------------------
+Arts & Entertainment 0.5735     0.4333     0.4937    
+Autos & Vehicles     0.4658     0.7556     0.5763    
+Business & Industrial 0.8438     0.3000     0.4426    
+Computers & Electronics 0.8154     0.2944     0.4327    
+Food & Drink         0.9184     0.7500     0.8257    
+Games                0.4790     0.8889     0.6226    
+Law & Government     0.8571     0.0333     0.0642    
+Pets & Animals       0.9244     0.6111     0.7358    
+Reference            0.2611     0.4556     0.3320    
+Sports               0.4627     0.8278     0.5936    

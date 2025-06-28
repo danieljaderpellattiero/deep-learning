@@ -1,0 +1,42 @@
+model:
+  input_dim: 4096
+  output_dim: 10
+
+audio_emb: False
+metadata_emb: True
+vector_augmentation:
+  # video_emb: 0.5
+  metadata_emb: 0.5
+  # audio_emb: 0.5
+
+optimizer:
+  lr: 0.0001
+
+scheduler:
+  warmup_epochs: 1
+  steps_per_epoch: 180
+  total_epochs: 20
+  min_lr: 0.000001
+
+dataset:
+  train:
+    data_path: "/home/elicer/embeddings/train"
+  val:
+    data_path: "/home/elicer/embeddings/validation"
+
+  
+dataloader:
+  train:
+    batch_size: 8
+    num_workers: 16
+    pin_memory: True
+    persistent_workers: True
+    shuffle: True
+    drop_last: True
+  val:
+    batch_size: 8
+    num_workers: 4
+    pin_memory: True
+    persistent_workers: True
+    shuffle: False
+    drop_last: False

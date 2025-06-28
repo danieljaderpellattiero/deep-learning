@@ -1,0 +1,8 @@
+max_epochs: 20
+# precision: "16-mixed"
+gradient_clip_algorithm: "norm"
+gradient_clip_val: 1.0
+accelerator: "gpu"
+devices: -1
+num_sanity_val_steps: -1
+check_val_every_n_epoch: 1

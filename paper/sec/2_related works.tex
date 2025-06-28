@@ -1,0 +1,20 @@
+\section{Related Work}
+
+%The landscape of video classification has been significantly shaped by the availability of large-scale datasets such as Kinetics~\cite{kay2017kinetics} and YouTube-8M~\cite{abu2016youtube}, which have spurred the development of sophisticated models. Video classification has become a cornerstone of computer vision research, driven by the proliferation of video content and the demand for automated understanding. Early approaches often relied on hand-crafted features or 2D convolutional neural networks (CNNs) applied frame-by-frame, followed by temporal aggregation methods like LSTMs. However, these methods sometimes struggled to capture complex spatio-temporal relationships effectively. The introduction of 3D CNNs marked a significant step forward, allowing for direct learning of spatio-temporal features.
+
+The advancements in video classification have been significantly driven by large-scale datasets such as Kinetics~\cite{kay2017kinetics} and YouTube-8M~\cite{abu2016youtube}, encouraging the development of sophisticated models.
+
+% Video classification has become a cornerstone of research in the field of computer vision, driven by two main factors.
+
+% Firstly, the proliferation of video content has made it necessary to develop automated analysis systems.
+% Secondly, the demand for such systems has increased significantly.
+
+%More recently, Transformer-based architectures have demonstrated remarkable success in video understanding, largely inspired by their achievements in natural language processing. TimeSformer~\cite{bertasius2021space} adapted the self-attention mechanism for video by factorizing space-time attention. VideoMAE~\cite{tong2022videomae} introduced a masked autoencoder pre-training strategy, proving data-efficient for self-supervised video representation learning. Similarly, ViViT~\cite{arnab2021vivit} explored different ways to tokenize and process video data using pure Transformer architectures or hybrid approaches. For instance, TikGuard~\cite{balat2024tikguard} built its own dataset, TikHarm, for harmful video classification for TikTok short-form videos and fine-tuned TimeSformer, VideoMAE, and ViViT with its dataset.
+
+Transformer-based architectures, successful in natural language processing, have notably influenced video understanding.
+TimeSformer~\cite{bertasius2021space} adapted self-attention mechanisms by factorizing space-time attention.
+VideoMAE~\cite{tong2022videomae} introduced masked autoencoder pre-training for efficient self-supervised video learning, and ViViT~\cite{arnab2021vivit} explored pure Transformer and hybrid video processing approaches.
+TikGuard~\cite{balat2024tikguard} created TikHarm, a dataset for classifying harmful TikTok videos, fine-tuning TimeSformer, VideoMAE, and ViViT. 
+
+In recent video understanding research, TwelveLabs has released a suite of pre-trained models, namely Marengo~\cite{jung2024pegasus}, Pegasus~\cite{ jung2024pegasus}, and their Embed API~\cite{lee2024twlv, twelvelabs_embed_api_doc}, which streamline video and audio representation learning. Marengo serves as a multimodal video understanding backbone, enabling tasks such as classification and captioning directly from raw video streams, while Pegasus builds on Marengo to improve text‐to‐video alignment and generation. The Embed API, powered by these underlying models, provides 1,024dimensional multimodal embeddings. 
+%By offloading feature extraction to Marengo and Pegasus, and exposing embeddings through the Embed API, TwelveLabs allows developers to focus on lightweight classifiers and downstream tasks with minimal compute overhead.

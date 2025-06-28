@@ -1,0 +1,6 @@
+=== Evaluation Summary ===
+Train      | Accuracy: 768/1440 = 53.33%
+Validation | Accuracy: 100/180 = 55.56%
+Test       | Accuracy: 95/180 = 52.78%
+
+Overall Accuracy: 963/1800 = 53.50%

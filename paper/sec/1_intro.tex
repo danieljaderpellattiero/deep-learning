@@ -1,0 +1,37 @@
+\section{Introduction}
+
+%Video classification is a fundamental task in computer vision with numerous applications, from content recommendation to moderation. However, processing raw video data typically involves expensive preprocessing pipelines (e.g., frame extraction, optical flow computation) and large models that demand substantial GPU memory and long training times. At the same time, recent advances in commercial embedding APIs, trained on large datasets, offer a convenient way to obtain rich, multimodal representations without designing custom feature extractors. Leveraging these embeddings could enable lighter-weight video applications without sacrificing accuracy.
+
+Video classification is a key task in computer vision, applicable to content recommendation and moderation.
+Processing raw videos typically requires extensive preprocessing (e.g., frame extraction, optical flow) and large models demanding significant GPU memory and training time.
+Recent embedding APIs, trained on large datasets, provide multimodal representations without custom feature extractors, enabling lightweight yet accurate video applications.
+
+%While sophisticated video models like TimeSformer~\cite{bertasius2021space} achieve state-of-the-art performance, their computational overhead can be prohibitive for many practical settings. In contrast, using off-the-shelf embedding APIs allows us to sidestep costly modality-specific preprocessing and focus on a small neural network that fuses these embeddings. This motivates our investigation into a more efficient, embedding-based approach.
+
+Although models like TimeSformer~\cite{bertasius2021space} achieve state-of-the-art performance, their computational demands are impractical for many scenarios.
+Using embedding APIs reduces preprocessing overhead, allowing the use of compact neural networks to integrate these embeddings.
+This motivated our efficient embedding-based approach.
+
+%Our initial project scope shifted from niche short-form video classification to a broader classification task on a general video dataset. We utilize a curated subset of the YouTube-8M dataset~\cite{abu2016youtube} to develop and evaluate our approach. The core contributions of this work are:
+
+The scope of the project evolved from short-form to broader video classification tasks using a curated subset of YouTube-8M~\cite{abu2016youtube}.
+
+The principal contributions of this study are as follows. 
+
+%\begin{itemize}
+    %\item A lightweight neural network model that effectively integrates multimodal embeddings (video, audio, and metadata) for video classification, leveraging TwelveLabs’s embedding API~\cite{twelvelabs_embed_api_doc} to simplify feature extraction.
+    %\item Comprehensive ablation studies that systematically evaluate the impact of different input embedding combinations, data augmentation strengths for video and metadata embeddings, and model architectures.
+    %\item Demonstration of a model that significantly outperforms standard baselines in accuracy while being an order of magnitude faster to train (approximately 1 minute for our model vs.\ 10 hours for TimeSformer fine-tuning).
+    %\item Insights into the importance of metadata embeddings and a novel augmentation strategy to improve generalization.
+%\end{itemize}
+
+%All code is available in our GitHub repository.\footnote{\url{https://github.com/usingcolor/20251R0136COSE47400}} 
+
+\begin{itemize}
+\item A lightweight model integrating multimodal embeddings (video, audio, metadata) using TwelveLabs's API~\cite{twelvelabs_embed_api_doc}.
+\item Ablation studies evaluating embedding combinations, augmentation strategies, and architectures.
+\item A model significantly outperforming standard baselines in accuracy and training speed (approx. one minute versus ten hours for TimeSformer).
+\item Discussion on metadata embeddings and a novel augmentation strategy to enhance generalization and reduce overfitting.
+\end{itemize}
+\noindent The complete codebase is available in the GitHub repository. 
+\footnote{\url{https://github.com/usingcolor/20251R0136COSE47400}}

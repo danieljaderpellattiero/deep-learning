@@ -162,21 +162,21 @@ def repair_downloads(split: str, category: str) -> None:
 			print(f'[{time.strftime("%H:%M:%S")}] Error processing TSV file: {tsv_path}')
 
 def repair_dataset() -> None:
-		build_categories_from_csv_dict()
-for split in ['train', 'validation', 'test']:
-	split_video_path = f'{VIDEO_PATH}/{split}'
-	wanted_categories: set[str] = sel_m_categories.copy()
-	if len(wanted_categories)	== 0:
-		wanted_categories = set([folder.name for folder in pathlib.Path(split_video_path).iterdir() if folder.is_dir()])
-	for category in wanted_categories:
-		category_video_path = f'{split_video_path}/{category}'
-		downloaded_videos =	list(pathlib.Path(category_video_path).glob('*'))
-		if len(downloaded_videos) < DESIRED_VIDEO_PER_CATEGORY[split]:
-			print(f'[{time.strftime("%H:%M:%S")} | {split}] Repairing category: {category} - '
-			f'{len(downloaded_videos)}/{DESIRED_VIDEO_PER_CATEGORY[split]} videos found')
-			repair_tsv_file(split, category, set([video.stem for video in downloaded_videos]))
-			repair_downloads(split, category)
-			print(f'[{time.strftime("%H:%M:%S")} | {split}] Repaired category: {category}')
+	build_categories_from_csv_dict()
+	for split in ['train', 'validation', 'test']:
+		split_video_path = f'{VIDEO_PATH}/{split}'
+		wanted_categories: set[str] = sel_m_categories.copy()
+		if len(wanted_categories)	== 0:
+			wanted_categories = set([folder.name for folder in pathlib.Path(split_video_path).iterdir() if folder.is_dir()])
+		for category in wanted_categories:
+			category_video_path = f'{split_video_path}/{category}'
+			downloaded_videos =	list(pathlib.Path(category_video_path).glob('*'))
+			if len(downloaded_videos) < DESIRED_VIDEO_PER_CATEGORY[split]:
+				print(f'[{time.strftime("%H:%M:%S")} | {split}] Repairing category: {category} - '
+				f'{len(downloaded_videos)}/{DESIRED_VIDEO_PER_CATEGORY[split]} videos found')
+				repair_tsv_file(split, category, set([video.stem for video in downloaded_videos]))
+				repair_downloads(split, category)
+				print(f'[{time.strftime("%H:%M:%S")} | {split}] Repaired category: {category}')
 
 if __name__ == "__main__":
 	repair_dataset()
